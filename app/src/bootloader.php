@@ -66,5 +66,5 @@ if (!isConsole()) {
     View::init();
 
     // Routes
-    import(APP_PATH.DS.'src'.DS.'routing.php');;
+    import(APP_PATH.DS.'src'.DS.'routing.php');
 }

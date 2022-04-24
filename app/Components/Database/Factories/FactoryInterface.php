@@ -1,12 +1,12 @@
 <?php
 
-namespace Simpler\Components\Database\Interfaces;
+namespace Simpler\Components\Database\Factories;
 
 interface FactoryInterface
 {
     /**
      * @param string $factory
-     * @return mixed
+     * @return array
      */
-    public static function make(string $factory);
+    public static function make(string $factory): array;
 }

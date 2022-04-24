@@ -8,7 +8,7 @@
 
 use Simpler\Components\Auth;
 use Simpler\Components\Config;
-use Simpler\Components\Database\Factory;
+use Simpler\Components\Database\Factories\Factory;
 use Simpler\Components\Exceptions\HandlerException;
 use Simpler\Components\Http\Providers\Cookie;
 use Simpler\Components\Http\Providers\Session;
@@ -541,9 +541,9 @@ if (!function_exists('factory')) {
      * Get object instance class with call method.
      *
      * @param string $factory
-     * @return mixed
+     * @return array
      */
-    function factory(string $factory)
+    function factory(string $factory): array
     {
         return Factory::make($factory);
     }

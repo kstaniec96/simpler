@@ -7,7 +7,7 @@
  * @version 2.0
  */
 
-namespace Simpler\Components\Database;
+namespace Simpler\Components\Database\Factories;
 
 abstract class AbstractFactory
 {

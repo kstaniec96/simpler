@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories{{ namespace }};
 
-use Simpler\Components\Database\AbstractFactory;
+use Simpler\Components\Database\Factories\AbstractFactory;
 
 class {{ class }} extends AbstractFactory
 {

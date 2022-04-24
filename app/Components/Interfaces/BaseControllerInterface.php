@@ -26,12 +26,11 @@ interface BaseControllerInterface
      * @param int $status
      * @return string
      */
-    public function success($data = null, int $status = HttpStatus::OK): string;
+    public function json($data = null, int $status = HttpStatus::OK): string;
 
     /**
-     * @param mixed $data
-     * @param int $status
-     * @return string
+     * @param mixed $error
+     * @return void
      */
-    public function error($data = null, int $status = HttpStatus::UNPROCESSABLE_ENTITY): string;
+    public function error($error = null): void;
 }

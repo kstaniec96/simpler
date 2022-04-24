@@ -1,0 +1,25 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Project\Http\Controllers{{ namespace }};
+
+use Simpler\Components\BaseController;
+use Exception;
+
+class {{ class }} extends BaseController
+{
+    public function index(): string
+    {
+        return $this->render('index');
+    }
+
+    public function init(): string
+    {
+        try {
+            return $this->success();
+        } catch (Exception $e) {
+            return $this->serverError($e->getMessage());
+        }
+    }
+}

@@ -131,6 +131,6 @@ class Auth implements AuthInterface
      */
     private static function getSessionName(): string
     {
-        return 'auth.login_user_'.sha1(env('PROJECT_NAME', 'Simpler'));
+        return 'auth.login_user_'.projectKey();
     }
 }

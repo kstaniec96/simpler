@@ -99,7 +99,7 @@ class Csrf implements CsrfInterface
      */
     private function getTokenName(): string
     {
-        return 'auth.csrf_token_'.sha1(env('PROJECT_NAME', 'Simpler'));
+        return 'auth.csrf_token_'.projectKey();
     }
 
     /**

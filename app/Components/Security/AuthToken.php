@@ -13,6 +13,7 @@ use Simpler\Components\Config;
 use Simpler\Components\DateTime;
 use Simpler\Components\Exceptions\AuthException;
 use Simpler\Components\Exceptions\ResponseException;
+use Simpler\Components\Facades\File;
 use Simpler\Components\Security\Interfaces\AuthTokenInterface;
 use Exception;
 use Firebase\JWT\JWT;
@@ -23,13 +24,22 @@ class AuthToken implements AuthTokenInterface
     /** @var string|null */
     private static ?string $id = null;
 
+    /** @var string */
+    private static string $token;
+
+    /** @var int */
+    private static int $expire;
+
+    /** @var string */
+    private const ALGORITHM = 'HS512';
+
     /**
      * Generate authorization token.
      *
      * @param $user
-     * @return string
+     * @return AuthToken
      */
-    public static function generate($user = null): string
+    public static function generate($user = null): AuthToken
     {
         try {
             $expire = DateTime::calc('now', Config::get('session.lifetime'), 'minutes')->getTimestamp();
@@ -42,7 +52,10 @@ class AuthToken implements AuthTokenInterface
                 'id' => $user->id ?? null,
             ];
 
-            return JWT::encode($data, env('JWT_SECRET_KEY'), env('JWT_ALGORITHM'));
+            self::$token = JWT::encode($data, self::getSecretString(), self::ALGORITHM);
+            self::$expire = $expire;
+
+            return (new self());
         } catch (Exception $e) {
             throw new ResponseException($e->getMessage());
         }
@@ -51,12 +64,14 @@ class AuthToken implements AuthTokenInterface
     /**
      * Refresh authorization token.
      *
-     * @return string
+     * @return AuthToken
      */
-    public static function refresh(): string
+    public static function refresh(): AuthToken
     {
         try {
-            return self::generate((object)['id' => self::id()]);
+            self::generate((object)['id' => self::id()]);
+
+            return (new self());
         } catch (Exception $e) {
             throw new ResponseException($e->getMessage());
         }
@@ -81,7 +96,7 @@ class AuthToken implements AuthTokenInterface
             throw new AuthException('No token was able to be extracted from the authorization header');
         }
 
-        $jwt = JWT::decode($jwt, new Key(env('JWT_SECRET_KEY'), env('JWT_ALGORITHM')));
+        $jwt = JWT::decode($jwt, new Key(self::getSecretString(), self::ALGORITHM));
 
         if (
             $jwt->iss !== url()->domain() ||
@@ -102,5 +117,35 @@ class AuthToken implements AuthTokenInterface
     public static function id(): ?string
     {
         return self::$id;
+    }
+
+    /**
+     * Get generated JWT token.
+     *
+     * @return string
+     */
+    public function token(): string
+    {
+        return self::$token;
+    }
+
+    /**
+     * Get expire generated JWT token.
+     *
+     * @return int
+     */
+    public function expire(): int
+    {
+        return self::$expire;
+    }
+
+    /**
+     * Get secret JWT string.
+     *
+     * @return string
+     */
+    private static function getSecretString(): string
+    {
+        return File::content(storagePath('jwt-secret.key'));
     }
 }

@@ -10,6 +10,7 @@ use Simpler\Components\Auth;
 use Simpler\Components\Config;
 use Simpler\Components\Database\Factories\Factory;
 use Simpler\Components\Exceptions\HandlerException;
+use Simpler\Components\Facades\File;
 use Simpler\Components\Http\Providers\Cookie;
 use Simpler\Components\Http\Providers\Session;
 use Simpler\Components\Http\Routers\Route;
@@ -546,5 +547,17 @@ if (!function_exists('factory')) {
     function factory(string $factory): array
     {
         return Factory::make($factory);
+    }
+}
+
+if (!function_exists('projectKey')) {
+    /**
+     * Get secret project key.
+     *
+     * @return string
+     */
+    function projectKey(): string
+    {
+        return File::content(storagePath('project-secret.key'));
     }
 }

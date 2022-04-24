@@ -2,18 +2,20 @@
 
 namespace Simpler\Components\Security\Interfaces;
 
+use Simpler\Components\Security\AuthToken;
+
 interface AuthTokenInterface
 {
     /**
      * @param $user
-     * @return string
+     * @return AuthToken
      */
-    public static function generate($user = null): string;
+    public static function generate($user = null): AuthToken;
 
     /**
-     * @return string
+     * @return AuthToken
      */
-    public static function refresh(): string;
+    public static function refresh(): AuthToken;
 
     /**
      * @return void
@@ -24,4 +26,14 @@ interface AuthTokenInterface
      * @return string|null
      */
     public static function id(): ?string;
+
+    /**
+     * @return string
+     */
+    public function token(): string;
+
+    /**
+     * @return int
+     */
+    public function expire(): int;
 }

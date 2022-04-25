@@ -1,6 +1,6 @@
 <?php
 
-namespace Simpler\Components\Interfaces;
+namespace Simpler\Components\Auth\Interfaces;
 
 use Simpler\Components\Database\Model;
 

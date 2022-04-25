@@ -6,7 +6,7 @@
  * @version 2.0
  */
 
-use Simpler\Components\Auth;
+use Simpler\Components\Auth\Auth;
 use Simpler\Components\Config;
 use Simpler\Components\Database\Factories\Factory;
 use Simpler\Components\Exceptions\HandlerException;

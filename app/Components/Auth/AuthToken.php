@@ -3,18 +3,18 @@
  * Auth Token operations.
  *
  * @package Simpler
- * @subpackage Security
+ * @subpackage Auth
  * @version 2.0
  */
 
-namespace Simpler\Components\Security;
+namespace Simpler\Components\Auth;
 
 use Simpler\Components\Config;
 use Simpler\Components\DateTime;
 use Simpler\Components\Exceptions\AuthException;
 use Simpler\Components\Exceptions\ResponseException;
 use Simpler\Components\Facades\File;
-use Simpler\Components\Security\Interfaces\AuthTokenInterface;
+use Simpler\Components\Auth\Interfaces\AuthTokenInterface;
 use Exception;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -36,10 +36,10 @@ class AuthToken implements AuthTokenInterface
     /**
      * Generate authorization token.
      *
-     * @param $user
+     * @param null|object $user
      * @return AuthToken
      */
-    public static function generate($user = null): AuthToken
+    public static function generate(?object $user = null): AuthToken
     {
         try {
             $expire = DateTime::calc('now', Config::get('session.lifetime'), 'minutes')->getTimestamp();
@@ -80,9 +80,9 @@ class AuthToken implements AuthTokenInterface
     /**
      * Check authorization token.
      *
-     * @return void
+     * @return bool
      */
-    public static function check(): void
+    public static function check(): bool
     {
         $auth = response()->getHeader('Authorization') ?? '';
 
@@ -107,6 +107,8 @@ class AuthToken implements AuthTokenInterface
         }
 
         self::$id = $jwt->id;
+
+        return true;
     }
 
     /**

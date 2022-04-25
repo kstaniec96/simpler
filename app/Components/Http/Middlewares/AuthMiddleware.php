@@ -9,7 +9,7 @@
 
 namespace Simpler\Components\Http\Middlewares;
 
-use Simpler\Components\Auth;
+use Simpler\Components\Auth\Auth;
 use Simpler\Components\Config;
 use RuntimeException;
 

@@ -9,7 +9,7 @@
  * @author Kamil Staniec
  */
 
-use Simpler\Components\Auth;
+use Simpler\Components\Auth\Auth;
 use Simpler\Components\Database\DB;
 use Simpler\Components\Exceptions\HandlerException;
 use Simpler\Components\Http\Routers\View;

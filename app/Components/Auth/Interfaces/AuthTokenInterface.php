@@ -1,16 +1,16 @@
 <?php
 
-namespace Simpler\Components\Security\Interfaces;
+namespace Simpler\Components\Auth\Interfaces;
 
-use Simpler\Components\Security\AuthToken;
+use Simpler\Components\Auth\AuthToken;
 
 interface AuthTokenInterface
 {
     /**
-     * @param $user
+     * @param null|object $user
      * @return AuthToken
      */
-    public static function generate($user = null): AuthToken;
+    public static function generate(?object $user = null): AuthToken;
 
     /**
      * @return AuthToken
@@ -18,9 +18,9 @@ interface AuthTokenInterface
     public static function refresh(): AuthToken;
 
     /**
-     * @return void
+     * @return bool
      */
-    public static function check(): void;
+    public static function check(): bool;
 
     /**
      * @return string|null

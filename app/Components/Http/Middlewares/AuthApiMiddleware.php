@@ -9,7 +9,7 @@
 
 namespace Simpler\Components\Http\Middlewares;
 
-use Simpler\Components\Security\AuthToken;
+use Simpler\Components\Auth\AuthToken;
 
 class AuthApiMiddleware
 {

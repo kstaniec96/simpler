@@ -3,14 +3,14 @@
  * Authorization user.
  *
  * @package Simpler
+ * @subpackage Auth
  * @version 2.0
  */
 
-namespace Simpler\Components;
+namespace Simpler\Components\Auth;
 
 use Simpler\Components\Database\Model;
-use Simpler\Components\Interfaces\AuthInterface;
-use Simpler\Components\Security\AuthToken;
+use Simpler\Components\Auth\Interfaces\AuthInterface;
 use Exception;
 use project\Models\User;
 use RuntimeException;

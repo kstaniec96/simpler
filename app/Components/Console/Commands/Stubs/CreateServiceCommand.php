@@ -26,7 +26,7 @@ class CreateServiceCommand extends Command
             $className = Stubs::getClassName($interfaceName);
 
             $replace = [
-                'use project\Interfaces\Services'.$namespace.'\\'.$className.';',
+                'use Project\Interfaces\Services'.$namespace.'\\'.$className.';',
                 'implements '.$className,
             ];
         }

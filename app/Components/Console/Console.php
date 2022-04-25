@@ -8,7 +8,7 @@
 
 namespace Simpler\Components\Console;
 
-use Simpler\Components\Console\Commands\CreateJWTSecretKeyCommand;
+use Simpler\Components\Console\Commands\CreateJWTSecretCommand;
 use Simpler\Components\Console\Commands\CreateProjectKeyCommand;
 use Simpler\Components\Console\Commands\CreateSymlinkCommand;
 use Simpler\Components\Console\Commands\Stubs\CreateConsoleCommand;
@@ -61,7 +61,7 @@ abstract class Console implements ConsoleInterface
 
         // Others
         'symlink' => CreateSymlinkCommand::class,
-        'jwt:install' => CreateJWTSecretKeyCommand::class,
+        'jwt:secret' => CreateJWTSecretCommand::class,
         'project:key' => CreateProjectKeyCommand::class,
     ];
 

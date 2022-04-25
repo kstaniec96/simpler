@@ -37,7 +37,6 @@ return [
         /**
          * Custom functions.
          */
-        ['activeNavItem'],
     ],
 
     /**

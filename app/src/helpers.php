@@ -561,3 +561,16 @@ if (!function_exists('projectKey')) {
         return File::content(storagePath('project-secret.key'));
     }
 }
+
+if (!function_exists('storage')) {
+    /**
+     * Get link to storage users path.
+     *
+     * @param string $path
+     * @return string
+     */
+    function storage(string $path): string
+    {
+        return url()->join('storage/users/'.$path);
+    }
+}

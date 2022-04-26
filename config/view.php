@@ -19,6 +19,7 @@ return [
         ['env'],
         ['__'],
         ['version'],
+        ['asset'],
         ['nonce'],
         ['route'],
         ['csrfToken'],
@@ -33,6 +34,8 @@ return [
         ['locale'],
         ['hasRoute'],
         ['getCurrentRouteName'],
+        ['count'],
+        ['storage'],
 
         /**
          * Custom functions.

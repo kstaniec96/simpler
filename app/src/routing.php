@@ -1,11 +1,13 @@
 <?php
 
-// Load API routes
-if (request()->isApi()) {
-    header('Content-Type: application/json; charset=utf-8');
-    import(ROUTES_PATH.DS.'api.php');
-} // Load Web routes
-else {
-    header('Content-Type: text/html; charset=utf-8');
-    import(ROUTES_PATH.DS.'web.php');
-}
+use Simpler\Components\Http\Routers\Route;
+
+/***** Import routes *****/
+import(ROUTES_PATH.DS.'web.php');
+import(ROUTES_PATH.DS.'api.php');
+
+/***** Render views *****/
+Route::render();
+
+/***** 404 - Not found *****/
+Route::routeNotFound('404.html');

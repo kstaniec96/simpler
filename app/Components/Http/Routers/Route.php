@@ -66,10 +66,6 @@ class Route implements RouteInterface
      */
     public static function web(array $params, $render): Route
     {
-        if (request()->isApi()) {
-            throw new RuntimeException('Route Web method for only web routes!');
-        }
-
         return self::routing($params, $render);
     }
 
@@ -78,11 +74,9 @@ class Route implements RouteInterface
      */
     public static function api(array $params, $render): Route
     {
-        if (!request()->isApi()) {
-            throw new RuntimeException('Route API method for only api routes!');
+        if (request()->isApi()) {
+            Csrf::check();
         }
-
-        Csrf::check();
 
         return self::routing($params, $render, false);
     }
@@ -196,6 +190,7 @@ class Route implements RouteInterface
     public static function render(): void
     {
         self::initMiddlewares();
+        dd(self::$routes);
 
         if (is_array(self::$render)) {
             [$className, $classMethod] = self::$render;
@@ -254,7 +249,7 @@ class Route implements RouteInterface
         $params = self::params($pathname, $uri);
 
         self::$url = url()->join($uri);
-        self::setName($data, $params);
+        self::setName($data, $params, $isWeb);
 
         if (compare($pathname, $uri)) {
             self::checkMethod($data['method'] ?? ($isWeb ? 'GET' : 'POST'));
@@ -342,9 +337,10 @@ class Route implements RouteInterface
      *
      * @param array $data
      * @param array $params
+     * @param bool $isWeb
      * @return void
      */
-    private static function setName(array $data, array $params): void
+    private static function setName(array $data, array $params, bool $isWeb = true): void
     {
         self::$routeName = $data['name'];
         $name = self::getAs().self::$routeName;
@@ -353,7 +349,7 @@ class Route implements RouteInterface
             $name .= implode('.', $params);
         }
 
-        self::$routes[$name] = self::$url;
+        self::$routes[($isWeb ? '' : 'api.').$name] = self::$url;
     }
 
     /**
@@ -368,15 +364,11 @@ class Route implements RouteInterface
         $explodePathname = explode('/', $pathname);
         $explodeUri = explode('/', $uri);
 
-        if ($explodePathname !== $explodeUri) {
-            return [];
-        }
-
         $params = [];
 
         foreach ($explodeUri as $key => $item) {
             if (compare(preg_match('/\{([^}]*)\}/', $item), 1)) {
-                $params[] = $explodePathname[$key];
+                $params[] = $explodePathname[$key] ?? '';
                 $explodePathname[$key] = $item;
             }
         }

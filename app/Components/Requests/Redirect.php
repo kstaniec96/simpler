@@ -19,14 +19,13 @@ class Redirect implements RedirectInterface
      *
      * @param string $to
      * @param int $code
-     * @param string|null $message
      * @return void
      */
-    public function to(string $to = '/', int $code = HttpStatus::FOUND, ?string $message = null): void
+    public function to(string $to = '/', int $code = HttpStatus::FOUND): void
     {
         ob_start();
 
-        response()->setStatusHeader($code, $message);
+        response()->status($code);
         header('Location:'.$to);
 
         exit;

@@ -10,10 +10,9 @@ interface RedirectInterface
     /**
      * @param string $to
      * @param int $code
-     * @param string|null $message
      * @return void
      */
-    public function to(string $to = '/', int $code = HttpStatus::FOUND, ?string $message = null): void;
+    public function to(string $to = '/', int $code = HttpStatus::FOUND): void;
 
     /**
      * @param string $status

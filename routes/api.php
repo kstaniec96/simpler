@@ -11,9 +11,3 @@ Route::api([
 ], static function () {
     return response()->json('Hello world');
 });
-
-// Render view
-Route::render();
-
-// 404 - Not Found
-Route::routeNotFound();

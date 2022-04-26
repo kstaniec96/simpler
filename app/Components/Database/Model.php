@@ -526,7 +526,7 @@ abstract class Model extends DB implements ModelInterface
             $tableName = $this->table;
         }
 
-        $tableName = strtolower($tableName);
+        $tableName = "`".strtolower($tableName)."`";
         $this->tableName = self::getPrefix().$tableName;
 
         if (!$alias) {
@@ -737,11 +737,11 @@ abstract class Model extends DB implements ModelInterface
      */
     private function reset(): void
     {
-        $this->whereBuilder = [];
-        $this->joinBuilder = [];
-        $this->orderBuilder = [];
-        $this->groupBuilder = [];
-        $this->havingBuilder = [];
+        self::$whereBuilder = [];
+        self::$joinBuilder = [];
+        self::$orderBuilder = [];
+        self::$groupBuilder = [];
+        self::$havingBuilder = [];
 
         $this->asObject = true;
         $this->limit = null;

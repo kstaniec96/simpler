@@ -54,4 +54,10 @@ interface RouteInterface
      * @return void
      */
     public static function render(): void;
+
+    /**
+     * @param string $path
+     * @return void
+     */
+    public static function import(string $path): void;
 }

@@ -24,7 +24,8 @@ return [
         'nip' => 'Field :field must be NIP',
         'time' => 'This :field must be time',
         'date' => 'This :field must be date',
-        'dateTime' => 'This :field mu be date time',
+        'dateTime' => 'This :field must be date time',
+        'array' => 'This :field must be array',
 
         /*
          * Custom rule valid messages.

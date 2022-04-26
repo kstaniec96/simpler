@@ -45,9 +45,9 @@ class Response implements ResponseInterface
      * JSON error data.
      *
      * @param $error
-     * @return void
+     * @return string
      */
-    public function error($error): void
+    public function error($error): string
     {
         echo $this->json($error->getMessage(), $error->getCode());
         exit;

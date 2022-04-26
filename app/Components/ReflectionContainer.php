@@ -8,11 +8,11 @@
 
 namespace Simpler\Components;
 
+use Simpler\Components\Exceptions\ThrowException;
 use Simpler\Components\Interfaces\ReflectionContainerInterface;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
-use RuntimeException;
 
 class ReflectionContainer implements ReflectionContainerInterface
 {
@@ -46,7 +46,7 @@ class ReflectionContainer implements ReflectionContainerInterface
 
             foreach ($params as $param) {
                 $className = $param->getType() && !$param->getType()->isBuiltin() ? $param->getType()->getName() : null;
-                $newInstanceParams[] = $className === null ? $param->getDefaultValue() : self::instance($className);
+                $newInstanceParams[] = is_null($className) ? $param->getDefaultValue() : self::instance($className);
             }
 
             self::$instance = $reflectionClass->newInstanceArgs(
@@ -55,7 +55,7 @@ class ReflectionContainer implements ReflectionContainerInterface
 
             return new self();
         } catch (ReflectionException $e) {
-            throw new RuntimeException($e->getMessage());
+            throw new ThrowException($e);
         }
     }
 
@@ -89,7 +89,7 @@ class ReflectionContainer implements ReflectionContainerInterface
 
             return self::$instance->$methodName(...$parameters);
         } catch (ReflectionException $e) {
-            throw new RuntimeException($e->getMessage());
+            throw new ThrowException($e);
         }
     }
 

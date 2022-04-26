@@ -142,9 +142,10 @@ interface ModelInterface
      * @param string $table
      * @param string $statement
      * @param string $type
+     * @param string|null $customTable
      * @return Model
      */
-    public function join(string $table, string $statement, string $type = 'left'): Model;
+    public function join(string $table, string $statement, string $type = 'left', ?string $customTable = null): Model;
 
     /**
      * @param int $pageLimit

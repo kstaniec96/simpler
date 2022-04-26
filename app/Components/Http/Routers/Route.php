@@ -190,7 +190,6 @@ class Route implements RouteInterface
     public static function render(): void
     {
         self::initMiddlewares();
-        dd(self::$routes);
 
         if (is_array(self::$render)) {
             [$className, $classMethod] = self::$render;
@@ -202,6 +201,17 @@ class Route implements RouteInterface
         if (is_callable(self::$render)) {
             echo (self::$render)(...self::$params);
         }
+    }
+
+    /**
+     * Import files with routes.
+     *
+     * @param string $path
+     * @return void
+     */
+    public static function import(string $path): void
+    {
+        import(basePath('routes/'.$path));
     }
 
     /*
@@ -249,7 +259,7 @@ class Route implements RouteInterface
         $params = self::params($pathname, $uri);
 
         self::$url = url()->join($uri);
-        self::setName($data, $params, $isWeb);
+        self::setName($data, $isWeb);
 
         if (compare($pathname, $uri)) {
             self::checkMethod($data['method'] ?? ($isWeb ? 'GET' : 'POST'));
@@ -336,18 +346,13 @@ class Route implements RouteInterface
      * Set route name.
      *
      * @param array $data
-     * @param array $params
      * @param bool $isWeb
      * @return void
      */
-    private static function setName(array $data, array $params, bool $isWeb = true): void
+    private static function setName(array $data, bool $isWeb = true): void
     {
         self::$routeName = $data['name'];
         $name = self::getAs().self::$routeName;
-
-        if (!empty($params)) {
-            $name .= implode('.', $params);
-        }
 
         self::$routes[($isWeb ? '' : 'api.').$name] = self::$url;
     }

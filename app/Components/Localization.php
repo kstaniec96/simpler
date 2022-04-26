@@ -83,7 +83,7 @@ class Localization implements LocalizationInterface
             return session(self::SESSION) ?? $default;
         }
 
-        return (response()->getHeader('Current-Locale') ?? request()->locale()) ?? $default;
+        return response()->getHeader('Current-Locale') ?? $default;
     }
 
     /**

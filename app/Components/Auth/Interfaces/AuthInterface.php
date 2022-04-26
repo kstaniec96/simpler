@@ -24,9 +24,9 @@ interface AuthInterface
     public static function user($relations = null): ?Model;
 
     /**
-     * @return string|null
+     * @return int|null
      */
-    public static function id(): ?string;
+    public static function id(): ?int;
 
     /**
      * @return bool

@@ -10,8 +10,8 @@
 namespace Simpler\Components\Http\Routers;
 
 use Simpler\Components\Config;
+use Simpler\Components\Exceptions\ThrowException;
 use Simpler\Components\Http\Routers\Interfaces\ViewInterface;
-use RuntimeException;
 use Throwable;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
@@ -26,6 +26,9 @@ class View implements ViewInterface
     /** @var string */
     private static string $view;
 
+    /** @var array */
+    private static array $share = [];
+
     /**
      * Init view.
      *
@@ -38,6 +41,7 @@ class View implements ViewInterface
             $loader = new FilesystemLoader($config['pathTemplates'], $config['rootPath']);
 
             self::$twig = new Environment($loader, $config['options']);
+            self::$share = [];
 
             if ($config['options']['debug']) {
                 self::$twig->addExtension(new DebugExtension());
@@ -54,7 +58,7 @@ class View implements ViewInterface
                 }
             }
         } catch (Throwable $e) {
-            throw new RuntimeException($e->getMessage());
+            throw new ThrowException($e);
         }
     }
 
@@ -69,7 +73,7 @@ class View implements ViewInterface
     {
         self::$view = $view.'.html.twig';
 
-        return self::$twig->render(self::$view, $params);
+        return self::$twig->render(self::$view, self::mergeParams($params));
     }
 
     /**
@@ -82,6 +86,31 @@ class View implements ViewInterface
      */
     public static function renderBlock(string $view, string $blockName, array $params = []): string
     {
-        return self::$twig->load($view.'.html.twig')->renderBlock($blockName, $params);
+        return self::$twig->load($view.'.html.twig')->renderBlock($blockName, self::mergeParams($params));
+    }
+
+    /**
+     * Share view params.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return View
+     */
+    public static function share(string $key, $value): View
+    {
+        self::$share[$key] = $value;
+
+        return new self();
+    }
+
+    /**
+     * Merge view params.
+     *
+     * @param array $params
+     * @return array
+     */
+    private static function mergeParams(array $params): array
+    {
+        return array_merge(self::$share, $params);
     }
 }

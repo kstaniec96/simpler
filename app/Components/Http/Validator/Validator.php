@@ -9,9 +9,11 @@
 
 namespace Simpler\Components\Http\Validator;
 
-use Simpler\Components\Auth;
+use Simpler\Components\Auth\Auth;
 use Simpler\Components\Config;
 use Simpler\Components\Enums\HttpStatus;
+use Simpler\Components\Exceptions\ServerErrorException;
+use Simpler\Components\Exceptions\UnprocessableException;
 use Simpler\Utils\TypeUtil;
 use RuntimeException;
 
@@ -33,7 +35,17 @@ class Validator implements ValidatorInterface
     private static array $config = [];
 
     /** @var array */
-    private static array $mainRules = ['nullable', 'required', 'numeric', 'int', 'regex', 'min', 'max'];
+    private static array $mainRules = [
+        'nullable',
+        'required',
+        'numeric',
+        'int',
+        'regex',
+        'min',
+        'max',
+        'array',
+        'string',
+    ];
 
     /** @var null|string */
     private ?string $error = null;
@@ -97,11 +109,11 @@ class Validator implements ValidatorInterface
      * Validation value from request.
      *
      * @param string $field
-     * @param string|null $value
+     * @param mixed $value
      * @param string $rule
      * @return void
      */
-    private function validValue(string $field, ?string $value, string $rule): void
+    private function validValue(string $field, $value, string $rule): void
     {
         foreach ($this->getRules($rule) as $getRule) {
             $ruleName = $this->splitRule($getRule, 'name');
@@ -119,6 +131,12 @@ class Validator implements ValidatorInterface
                     }
                     break;
 
+                case 'string':
+                    if (!is_string($value)) {
+                        $this->validException('string');
+                    }
+                    break;
+
                 case 'int':
                     if (!is_int($value)) {
                         $this->validException('int');
@@ -128,6 +146,12 @@ class Validator implements ValidatorInterface
                 case 'numeric':
                     if (!is_numeric($value)) {
                         $this->validException('numeric');
+                    }
+                    break;
+
+                case 'array':
+                    if (!is_array($value)) {
+                        $this->validException('array');
                     }
                     break;
 
@@ -166,7 +190,7 @@ class Validator implements ValidatorInterface
                             $message = __('validator.rules.field', ['field' => self::$fieldName]);
                         }
 
-                        throw new RuntimeException($message);
+                        throw new UnprocessableException($message);
                     }
             }
         }
@@ -182,7 +206,7 @@ class Validator implements ValidatorInterface
     {
         foreach ($this->getRules($rule) as $getRule) {
             if (!in_array($this->splitRule($getRule, 'name'), self::$mainRules, true)) {
-                throw new RuntimeException(
+                throw new ServerErrorException(
                     __('validator.errors.ruleDoesNotExist', [
                         'rule' => $getRule,
                     ])
@@ -198,7 +222,7 @@ class Validator implements ValidatorInterface
     private function getRules(string $rule): array
     {
         if (empty($rule)) {
-            throw new RuntimeException(__('validator.errors.ruleCannotByEmpty'));
+            throw new ServerErrorException(__('validator.errors.ruleCannotByEmpty'));
         }
 
         if (strpos($rule, '|') !== false) {
@@ -236,7 +260,7 @@ class Validator implements ValidatorInterface
      */
     private function validException(string $index, array $bind = []): void
     {
-        throw new RuntimeException(
+        throw new UnprocessableException(
             $this->error ?? __(
                 'validator.rules.'.$index,
                 array_merge(

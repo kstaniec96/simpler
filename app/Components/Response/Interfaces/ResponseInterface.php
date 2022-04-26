@@ -24,9 +24,9 @@ interface ResponseInterface
 
     /**
      * @param $error
-     * @return void
+     * @return string
      */
-    public function error($error): void;
+    public function error($error): string;
 
     /**
      * @return array

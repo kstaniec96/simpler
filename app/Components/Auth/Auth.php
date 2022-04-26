@@ -12,7 +12,7 @@ namespace Simpler\Components\Auth;
 use Simpler\Components\Database\Model;
 use Simpler\Components\Auth\Interfaces\AuthInterface;
 use Exception;
-use project\Models\User;
+use Project\Models\User;
 use RuntimeException;
 
 class Auth implements AuthInterface
@@ -63,9 +63,9 @@ class Auth implements AuthInterface
     /**
      * Get logged user id.
      *
-     * @return string|null
+     * @return int|null
      */
-    public static function id(): ?string
+    public static function id(): ?int
     {
         try {
             return session(self::getSessionName()) ?? AuthToken::id();

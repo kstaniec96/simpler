@@ -10,7 +10,6 @@ namespace Simpler\Components\Http;
 
 use Simpler\Components\Enums\HttpStatus;
 use Simpler\Components\Http\Routers\View;
-use Simpler\Components\Interfaces\BaseControllerInterface;
 
 abstract class BaseController implements BaseControllerInterface
 {
@@ -40,6 +39,18 @@ abstract class BaseController implements BaseControllerInterface
     }
 
     /**
+     * Share view params.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return View
+     */
+    public function share(string $key, $value): View
+    {
+        return View::share($key, $value);
+    }
+
+    /**
      * Success json response
      *
      * @param mixed $data
@@ -55,10 +66,10 @@ abstract class BaseController implements BaseControllerInterface
      * Error json response
      *
      * @param mixed $error
-     * @return void
+     * @return string
      */
-    public function error($error = null): void
+    public function error($error = null): string
     {
-        response()->error($error);
+        return response()->error($error);
     }
 }

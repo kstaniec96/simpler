@@ -57,7 +57,10 @@ class Mailer implements MailerInterface
             $templateName = $template['name'] ?? 'default';
 
             if (array_key_exists('template', $params)) {
-                $params['html'] = View::render($templateName, $template['params'] ?? []);
+                $templateParams = $template['params'] ?? [];
+                $templateParams['subject'] = $subject;
+
+                $params['html'] = View::render($templateName, $templateParams);
             }
 
             $logger = new Swift_Plugins_Loggers_ArrayLogger();

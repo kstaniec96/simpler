@@ -6,6 +6,9 @@ Simpler is currently in beta and is suitable for creating simple projects.
 ## Version
 Currently, the latest version of Simpler is 2.0 beta on 24/04/2022.
 
+## Example
+An example project can be found here: https://github.com/kstaniec96/workflow
+
 ## About Simpler
 Simpler is a very simple, flexible and lightweight PHP framework supported by 
 composer and several popular libraries, incl. PHPUnit and SwiftMailer. 
